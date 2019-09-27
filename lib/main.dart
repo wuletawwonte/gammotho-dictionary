@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gamo-Dict"),
-        backgroundColor: Color.fromARGB(255, 255, 193, 7)
+        backgroundColor: Colors.orange
         ),
       drawer: Drawer(
         child: ListView(
@@ -28,10 +28,13 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Text("This is drawer header")              
               ),
-            CustomListTile(Icons.person, "Persons", ()=>{}),
+            CustomListTile(Icons.translate, "Dictionary", ()=>{}),
             CustomListTile(Icons.dashboard, "Dashboard", ()=>{}),
             CustomListTile(Icons.offline_bolt, "Bolt", ()=>{}),
             CustomListTile(Icons.satellite, "Satelite", ()=>{}),
+            CustomListTile(Icons.share, "Share App", ()=>{}),
+            CustomListTile(Icons.rate_review, "Rate and Review", ()=>{}),
+            CustomListTile(Icons.perm_identity, "About", ()=>{}),
           ],
           )
         ),
