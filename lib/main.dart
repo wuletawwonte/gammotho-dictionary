@@ -9,6 +9,7 @@ main() {
   ));
   runApp(MaterialApp(
     title: "Gamo Dictionary",
+    debugShowCheckedModeBanner: false,
     home: HomeScreen(),
   ));
 }
