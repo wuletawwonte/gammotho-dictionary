@@ -4,7 +4,7 @@ import 'package:gamo_dict/pages/home.dart';
 main() {
   runApp(MaterialApp(
     title: "Gamo Dictionary",
-    debugShowCheckedModeBanner: false,
+    // debugShowCheckedModeBanner: false,
     // theme: ThemeData(
     //   primarySwatch: Colors.orange,
     //   ),

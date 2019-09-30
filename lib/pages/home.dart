@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamo_dict/CustomShapeClipper.dart';
-import "package:flutter/services.dart";
+import 'package:flutter/services.dart';
+import 'package:gamo_dict/pages/history.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -31,29 +32,33 @@ class HomeScreen extends StatelessWidget {
               child: Text("This is drawer header", style: TextStyle(color: Colors.white),)              
               ),
             CustomListTile(Icons.home, "Home", ()=>{}),
-            CustomListTile(Icons.history, "History", ()=>{}),
+            CustomListTile(Icons.history, "History", () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return History();
+                }
+              ));
+            }),
             CustomListTile(Icons.favorite_border, "Favourites", ()=>{}),
             CustomListTile(Icons.calendar_today, "Word of the Month", ()=>{}),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey.shade400))
-              ),
-              child: ListTile(
-                title: Text("Others", style: TextStyle(fontSize: 18)),
-                ),
-            ),
+            Divider(),
             CustomListTile(Icons.share, "Share App", ()=>{}),
             CustomListTile(Icons.rate_review, "Rate and Review", ()=>{}),
             CustomListTile(Icons.perm_identity, "About", ()=>{}),
           ],
           )
         ),
-      body: Column(
-        children: <Widget>[
-          HomeTopPart()
-        ],
-      ),
-      );
+      body: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  HomeTopPart(),
+                  SizedBox(height: 20.0,),
+                  HomeBottomPart(),
+                ],
+              ),
+            ),
+        );
   }
 }
 
@@ -61,7 +66,6 @@ class HomeTopPart extends StatefulWidget {
   @override
   _HomeTopPartState createState() => _HomeTopPartState();
 }
-
 class _HomeTopPartState extends State<HomeTopPart> {
   bool isSelected = true;
 
@@ -125,16 +129,14 @@ class _HomeTopPartState extends State<HomeTopPart> {
               ],
             )
           ],
+        ),
+        ),
         )
-        ),)
       ],
     );
     
   }
 }
-
-
-
 class LangChoice extends StatefulWidget {
   final String lang;
   final bool selected;
@@ -143,7 +145,6 @@ class LangChoice extends StatefulWidget {
   @override
   _LangChoiceState createState() => _LangChoiceState();
 }
-
 class _LangChoiceState extends State<LangChoice> {
   @override
   Widget build(BuildContext context) {
@@ -166,7 +167,6 @@ class _LangChoiceState extends State<LangChoice> {
     );
   }
 }
-
 class CustomListTile extends StatelessWidget {
 
   final IconData icon;
@@ -235,3 +235,30 @@ class WordSearch extends SearchDelegate<String> {
       itemCount: suggestionList.length,
     );
   }}
+
+class HomeBottomPart extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),    
+      child: Card(
+        borderOnForeground: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              leading: Icon(Icons.calendar_today),
+              title: Text('Word of the day'),
+              subtitle: Text('Wongela'),
+            )
+          ],
+        ),
+      ),
+    );
+
+
+  }
+}
+
