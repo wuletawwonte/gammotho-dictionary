@@ -8,10 +8,11 @@ class HomeScreen extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    // systemNavigationBarColor: Colors.transparent, // navigation bar color
-    statusBarColor: Colors.orange, // status bar color
-  ));
+      // systemNavigationBarColor: Colors.transparent, // navigation bar color
+      statusBarColor: Colors.orange, // status bar color
+      ));
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text("Gamo-Dict"),
         elevation: 0.0,
@@ -72,12 +73,11 @@ class _HomeTopPartState extends State<HomeTopPart> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     var textStyle = TextStyle(color: Colors.white, fontSize: 24.0);
     return Stack(
       children: <Widget>[
-        ClipPath(clipper: CustomShapeClipper(), child: Container(height: height * 0.4, width: width, color: Colors.orange,
+        ClipPath(clipper: CustomShapeClipper(), child: Container(height: 300, width: width, color: Colors.orange,
         child: Column(
           children: <Widget>[
             SizedBox(height: 40.0,),
@@ -242,14 +242,13 @@ class HomeBottomPart extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),    
       child: Card(
-        borderOnForeground: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              leading: Icon(Icons.calendar_today),
+              leading: Icon(Icons.calendar_today, color: Colors.lightBlue,),
               title: Text('Word of the day'),
               subtitle: Text('Wongela'),
             )
