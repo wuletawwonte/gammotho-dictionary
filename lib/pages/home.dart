@@ -1,7 +1,9 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:gamo_dict/CustomShapeClipper.dart';
 import 'package:flutter/services.dart';
 import 'package:gamo_dict/pages/history.dart';
+// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -18,9 +20,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Colors.orange,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.more_vert), onPressed: (){
-            showSearch(context: context, delegate: WordSearch());
-          },),
+          IconButton(icon: Icon(Icons.settings), onPressed: (){}),
         ],
         ),
       drawer: Drawer(        
@@ -28,9 +28,12 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.orange,
+                image: DecorationImage(
+                  image: AssetImage("images/drawerbg.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: Text("This is drawer header", style: TextStyle(color: Colors.white),)              
+              child: Text("", style: TextStyle(color: Colors.white),)              
               ),
             CustomListTile(Icons.home, "Home", ()=>{}),
             CustomListTile(Icons.history, "History", () {
@@ -69,7 +72,22 @@ class HomeTopPart extends StatefulWidget {
 }
 class _HomeTopPartState extends State<HomeTopPart> {
   bool isSelected = true;
+  List<String> words = ["ሰላም", "Abebe", "Kebede", "Almaz", "Alemayehu", "Aster", "Bekele", "Wondifraw"];
 
+  Widget row(String item) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.black26)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(item, style: TextStyle(fontSize: 22, color: Colors.black54),),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,54 +106,69 @@ class _HomeTopPartState extends State<HomeTopPart> {
               child: Material(
                 elevation: 5.0,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                child: TextField(
-                  cursorColor: Colors.grey,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 13.0),
-                    suffixIcon: Material(
-                      elevation: 2.0,
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      child: Icon(Icons.search, color: Colors.grey, ),
+                child: AutoCompleteTextField<String>(
+                  suggestions: words,
+                  itemFilter: (item, query) {
+                    return item.toLowerCase().startsWith(query.toLowerCase());
+                  },
+                  itemSorter: (a, b) {
+                    return a.compareTo(b);
+                  },
+                  itemSubmitted: (item) {
+
+                  },
+                  itemBuilder: (context, item) {
+                    return row(item);
+                                      },
+                                      decoration: InputDecoration(
+                                        // cursorColor: Colors.grey,
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 13.0),
+                                        suffixIcon: Material(
+                                          elevation: 2.0,
+                                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                          child: Icon(Icons.search, color: Colors.grey, ),
+                                          
+                                        ),
+                                        hintText: 'Enter Search Word',
+                                      ),
+                                    ),
+                                    ),
+                                ),
+                                SizedBox(height: 20,),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: LangChoice("English", isSelected),
+                                      onTap: () {
+                                        setState(() {
+                                          isSelected = true;                      
+                                        });
+                                      },
+                                      ),
+                                    SizedBox(width: 25,),
+                                    InkWell(
+                                      child: LangChoice("አማርኛ", !isSelected), 
+                                      onTap: () {
+                                        setState(() {
+                                          isSelected = false;                      
+                                        });
+                                      },
+                                      ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            ),
+                            )
+                          ],
+                        );
+                        
+                      }
+                    
                       
-                    ),
-                    hintText: 'Enter Search Word',
-                  ),
-                ),
-                ),
-            ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                InkWell(
-                  child: LangChoice("English", isSelected),
-                  onTap: () {
-                    setState(() {
-                      isSelected = true;                      
-                    });
-                  },
-                  ),
-                SizedBox(width: 25,),
-                InkWell(
-                  child: LangChoice("አማርኛ", !isSelected), 
-                  onTap: () {
-                    setState(() {
-                      isSelected = false;                      
-                    });
-                  },
-                  ),
-              ],
-            )
-          ],
-        ),
-        ),
-        )
-      ],
-    );
-    
-  }
 }
 class LangChoice extends StatefulWidget {
   final String lang;
@@ -200,41 +233,6 @@ class CustomListTile extends StatelessWidget {
           );
     }
 }
-class WordSearch extends SearchDelegate<String> {
-  final words = ["Abebe", "Besso", "Cala", "Demo", "Endalew"];
-  final recentWords = ["Abebe", "Demo"];
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [IconButton(icon: Icon(Icons.clear), onPressed: (){},)];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ), 
-      onPressed: (){});
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return null;
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty?recentWords:words;
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        leading: Icon(Icons.location_city),
-        title: Text(suggestionList[index])
-      ),
-      itemCount: suggestionList.length,
-    );
-  }}
 
 class HomeBottomPart extends StatelessWidget {
   @override
