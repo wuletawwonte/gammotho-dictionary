@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomShapeClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    // TODO: implement getClip
+    // implement getClip
     final Path path = Path();
     path.lineTo(0.0, size.height);
     
