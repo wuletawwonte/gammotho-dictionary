@@ -7,9 +7,9 @@ main() {
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.orange,
-      primaryTextTheme: TextTheme(
-        title: TextStyle(color: Colors.white),
-      ),
+      // primaryTextTheme: TextTheme(
+      //   // title: TextStyle(color: Colors.white),
+      // ),
       primaryIconTheme: IconThemeData(
         color: Colors.white,
       ),

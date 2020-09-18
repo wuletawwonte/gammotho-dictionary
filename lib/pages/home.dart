@@ -129,6 +129,7 @@ class _HomeTopPartState extends State<HomeTopPart> {
                 elevation: 5.0,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
                 child: AutoCompleteTextField<Word>(
+                  key: GlobalKey(),
                   suggestions: words,
                   itemFilter: (item, query) {
                     return item.word.toLowerCase().startsWith(query.toLowerCase());
