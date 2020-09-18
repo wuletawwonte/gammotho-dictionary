@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gamo_dict/CustomShapeClipper.dart';
 import 'package:flutter/services.dart';
 import 'package:gamo_dict/pages/history.dart';
+// import 'dart:async';
+import 'package:gamo_dict/sqlite/word.dart';
+import 'package:gamo_dict/sqlite/db_helper.dart';
+
 // import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -72,9 +76,27 @@ class HomeTopPart extends StatefulWidget {
 }
 class _HomeTopPartState extends State<HomeTopPart> {
   bool isSelected = true;
-  List<String> words = ["ሰላም", "Abebe", "Kebede", "Almaz", "Alemayehu", "Aster", "Bekele", "Wondifraw"];
+  List<Word> words = [];
+  var dbHelper;
 
-  Widget row(String item) {
+  @override
+  void initState() {
+    super.initState();
+    dbHelper =  DBHelper();
+    getWords();
+  }
+
+  getWords() {
+    // List<Word> kword;
+    dbHelper.getWords().then((word){
+      print("length: " + word.length.toString());  
+    }).catchError((e) {
+      print(e.toString());
+    });
+    // return kword;
+  } 
+
+  Widget row(Word item) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       decoration: BoxDecoration(
@@ -83,7 +105,7 @@ class _HomeTopPartState extends State<HomeTopPart> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(item, style: TextStyle(fontSize: 22, color: Colors.black54),),
+          Text(item.word, style: TextStyle(fontSize: 22, color: Colors.black54),),
         ],
       ),
     );
@@ -106,13 +128,13 @@ class _HomeTopPartState extends State<HomeTopPart> {
               child: Material(
                 elevation: 5.0,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                child: AutoCompleteTextField<String>(
+                child: AutoCompleteTextField<Word>(
                   suggestions: words,
                   itemFilter: (item, query) {
-                    return item.toLowerCase().startsWith(query.toLowerCase());
+                    return item.word.toLowerCase().startsWith(query.toLowerCase());
                   },
                   itemSorter: (a, b) {
-                    return a.compareTo(b);
+                    return a.word.compareTo(b.word);
                   },
                   itemSubmitted: (item) {
 
